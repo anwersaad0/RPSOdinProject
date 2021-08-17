@@ -1,58 +1,107 @@
-const choices = ['rock', 'paper', 'scissors']
-/*choices.sort((str1, str2) => str1.localeCompare(str2, undefined, { sensitivity: 'accent'}))*/
-let rounds = 0;
+const choices = ['Rock', 'Paper', 'Scissors'];
+
+let playerPts = 0;
+let computerPts = 0;
+
+const tryAgain = " Refresh to try again!";
+
+const textDiv = document.querySelector('div.scoretext');
+const resultDiv = document.querySelector('div.resulttext');
+const winnerDiv = document.querySelector('div.winnertext');
+
+const playerScore = document.createElement('p');
+const computerScore = document.createElement('p');
+
+const matchText = document.createElement('p');
+const roundResultText = document.createElement('p');
+
+const winnerText = document.createElement('p');
+
+playerScore.textContent = "Player: " + playerPts;
+computerScore.textContent = "Computer: " + computerPts;
+
+roundResultText.textContent = "Click any button!"
+
+winnerText.textContent = "First to 5 wins the game!";
 
 function computerPlay () {
     return choices[Math.floor(Math.random() * 3)]
 }
 
+function playerWin() {
+    roundResultText.textContent = 'The Player wins this round!';
+    playerPts++;
+    playerScore.textContent = "Player: " + playerPts;
+}
+
+function computerWin() {
+    roundResultText.textContent = 'The Computer wins this round!';
+    computerPts++;
+    computerScore.textContent = "Computer: " + computerPts;
+}
+
 function playRound(playerChoice, computerChoice) {
-    console.log("Player picked " + playerChoice + " and Computer picked "
-     + computerChoice + "!")
+    matchText.textContent ="Player picked " + playerChoice + " and Computer picked "
+     + computerChoice + "!";
     if (playerChoice == choices[0]) {
         if (computerChoice == choices[0]) {
-            console.log("It's a tie!")
+            roundResultText.textContent = "It's a tie!";
         }
         else if(computerChoice == choices[1]) {
-            console.log('The Computer Wins!')
+            computerWin()
         }
         else if (computerChoice == choices[2]) {
-            console.log('The Player Wins!')
+            playerWin();
         }
     } else if (playerChoice == choices[1]) {
         if (computerChoice == choices[0]) {
-            console.log('The Player Wins!')
+            playerWin();
         }
         else if (computerChoice == choices[1]) {
-            console.log("It's a tie!")
+            roundResultText.textContent = "It's a tie!";
         }
         else if(computerChoice == choices[2]) {
-            console.log('The Computer Wins!')
+            computerWin();
         }
     } else if (playerChoice == choices[2]) {
         if (computerChoice == choices[1]) {
-            console.log('The Player Wins!')
+            playerWin();
         }
         else if (computerChoice == choices[2]) {
-            console.log("It's a tie!")
+            roundResultText.textContent = "It's a tie!";
         }
         else if(computerChoice == choices[0]) {
-            console.log('The Computer Wins!')
+            computerWin();
         }
     }
 }
 
-function game() {
-    let playerSelect = prompt("Rock, Paper, or Scissors?")
-    playerSelect = playerSelect.toLowerCase()
+function checkWinner() {
+    if (playerPts == 5) {
+        winnerText.textContent = 'The Player wins the game!' + tryAgain;
+    } else if (computerPts == 5) {
+        winnerText.textContent = 'The Computer wins the game!' + tryAgain;
+    }
+}
+
+function game(e) {
+    const playerSelect = e.target.textContent;
+    if (!playerSelect) return;
     let computerSelection = computerPlay()
     playRound(playerSelect, computerSelection)
 }
 
-function play() {
-    while(rounds < 5) {
-        game()
-        rounds++
+window.addEventListener('click', function(e) {
+    game(e);
+    if (playerPts == 5 || computerPts == 5) {
+        checkWinner();
     }
-}
-play()
+});
+
+textDiv.appendChild(playerScore);
+textDiv.appendChild(computerScore);
+
+resultDiv.appendChild(matchText);
+resultDiv.appendChild(roundResultText);
+
+winnerDiv.appendChild(winnerText);
