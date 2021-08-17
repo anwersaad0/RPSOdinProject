@@ -5,6 +5,10 @@ let computerPts = 0;
 
 const tryAgain = " Refresh to try again!";
 
+const rockBtn = document.querySelector('button.rock');
+const paperBtn = document.querySelector('button.paper');
+const scisBtn = document.querySelector('button.scissors');
+
 const textDiv = document.querySelector('div.scoretext');
 const resultDiv = document.querySelector('div.resulttext');
 const winnerDiv = document.querySelector('div.winnertext');
@@ -91,7 +95,21 @@ function game(e) {
     playRound(playerSelect, computerSelection)
 }
 
-window.addEventListener('click', function(e) {
+rockBtn.addEventListener('click', function(e) {
+    game(e);
+    if (playerPts == 5 || computerPts == 5) {
+        checkWinner();
+    }
+});
+
+paperBtn.addEventListener('click', function(e) {
+    game(e);
+    if (playerPts == 5 || computerPts == 5) {
+        checkWinner();
+    }
+});
+
+scisBtn.addEventListener('click', function(e) {
     game(e);
     if (playerPts == 5 || computerPts == 5) {
         checkWinner();
