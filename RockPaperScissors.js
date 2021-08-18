@@ -1,3 +1,4 @@
+// Normal constants
 const choices = ['Rock', 'Paper', 'Scissors'];
 
 let playerPts = 0;
@@ -5,13 +6,22 @@ let computerPts = 0;
 
 const tryAgain = " Refresh to try again!";
 
+//HTML components section 
+
 const rockBtn = document.querySelector('button.rock');
 const paperBtn = document.querySelector('button.paper');
 const scisBtn = document.querySelector('button.scissors');
 
+const resetBtn = document.createElement('button');
+resetBtn.textContent = "Reset";
+resetBtn.className = "resetbutton";
+
+const btnList = [rockBtn, paperBtn, scisBtn];
+
 const textDiv = document.querySelector('div.scoretext');
 const resultDiv = document.querySelector('div.resulttext');
 const winnerDiv = document.querySelector('div.winnertext');
+const resetDiv = document.querySelector('div.reset');
 
 const playerScore = document.createElement('p');
 const computerScore = document.createElement('p');
@@ -27,6 +37,8 @@ computerScore.textContent = "Computer: " + computerPts;
 roundResultText.textContent = "Click any button!"
 
 winnerText.textContent = "First to 5 wins the game!";
+
+//HTML component section ^
 
 function computerPlay () {
     return choices[Math.floor(Math.random() * 3)]
@@ -80,11 +92,31 @@ function playRound(playerChoice, computerChoice) {
     }
 }
 
+function endGame() {
+    for (let i = 0; i < btnList.length; i++) {
+        btnList[i].disabled = true;
+    }
+    resetDiv.appendChild(resetBtn);
+}
+
+function restart() {
+    playerPts = 0;
+    computerPts = 0;
+    playerScore.textContent = "Player: " + playerPts;
+    computerScore.textContent = "Computer: " + computerPts;
+    for (let i = 0; i < btnList.length; i++) {
+        btnList[i].disabled = false;
+    }
+    resetDiv.removeChild(resetBtn);
+}
+
 function checkWinner() {
     if (playerPts == 5) {
         winnerText.textContent = 'The Player wins the game!' + tryAgain;
+        endGame();
     } else if (computerPts == 5) {
-        winnerText.textContent = 'The Computer wins the game!' + tryAgain;
+        winnerText.textContent = 'The Computer wins the game!' + tryAgain
+        endGame();
     }
 }
 
@@ -114,6 +146,10 @@ scisBtn.addEventListener('click', function(e) {
     if (playerPts == 5 || computerPts == 5) {
         checkWinner();
     }
+});
+
+resetBtn.addEventListener('click', function(e) {
+    restart();
 });
 
 textDiv.appendChild(playerScore);
